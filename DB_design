@@ -1,0 +1,86 @@
+/** 
+    The following DDL creates the County Garden Database Schema
+*/
+
+drop table Policy ;
+drop table Beneficiary ;
+drop table Payment ;
+drop table Customer ;
+drop table Agent ;
+drop table Claim ;
+drop table Outsourcing ;
+drop table Adjuster ;
+drop table Claim_Payments ;
+
+
+create table Policy (
+    ID int not null,
+    active varchar(3) not null,
+    Primary Key (ID)
+);
+
+create table Beneficiary (
+    ID int not null,
+    policy_id int not null,
+    overview varchar(50) ,
+    Primary Key(ID)
+);
+
+create table Payment(
+    ID int not null, 
+    policy_id int not null,
+    date_paid Date not null,
+    paymnt_method varchar(10),
+    Primary Key(ID)
+);
+
+create table Customer(
+    ID int not null,
+    policy_id int not null,
+    bio varchar(50),
+    Primary Key(ID)
+);
+
+create table Agent(
+    ID int not null, 
+    customer_id  int,
+    Primary Key(ID)
+);
+
+create table Claim(
+    ID int not null,
+    customer_id int not null,
+    date_paid Date not null,
+    status varchar(15)not null,
+    adjuster_id int not null,
+    Primary Key(ID)
+);
+
+create table Outsourcing(
+    ID int not null,
+    claim_id int not null,
+    name varchar(25) not null,
+    email varchar(20),
+    phone varchar(20) not null, 
+    service_report varchar(150) not null,
+    Primary Key(ID)
+);
+
+create table Adjuster(
+    ID int not null, 
+    Primary Key(ID)
+);
+
+create table Claim_Payments(
+    ID int not null,
+    claim_id int not null,
+    company_liability float, 
+    tot_sum float,
+    Primary Key(ID)
+);
+
+
+
+
+
+
