@@ -32,47 +32,47 @@ class Main {
                     throw new Exception() ;
                 }
                 connected = true;
+                //step3 create the statement object. Now you are ready to run queries. 
+                Statement stmt=con.createStatement(); 
+                
                 System.out.println("Connection to the DB SUCCESSFUL!");
-                System.out.println("Input starting and ending dates for stock price data: "); 
-                System.out.println("Enter start date in Oracle standard format (dd-MON-yy): "); 
-                //String startDate = myScanner.nextLine() ;
-                //String endDate = myScanner.nextLine() ;
-                /*
-                //while -> if?
-                while(!format_check(startDate)){
-                    System.out.println("The start date should be in (dd-MON-yy) format: ");
-                    startDate = myScanner.nextLine() ;
-                }
-                System.out.println("Enter end date in Oracle standard format (dd-MON-yy): "); 
-                String endDate = myScanner.nextLine() ;
-                while(!format_check(endDate)){
-                    System.out.println("The end date should be in (dd-MON-yy) format: ");
-                    endDate = myScanner.nextLine() ;
-                }
-                **/
-                //step3 create the statement object  
-                Statement stmt=con.createStatement();  
-                
-                //step4 execute queries
-                
-                //query 1: getting number of trading days between 2 dates
-                PreparedStatement prep_stmnt1=con.prepareStatement("SELECT * FROM POLICY ");  
-                ResultSet rs1=prep_stmnt1.executeQuery();  
-                ResultSetMetaData rsmd = rs1.getMetaData();
-                int column_numb = rsmd.getColumnCount();
-                for(int i = 1; i <= column_numb; i++){
-                    System.out.print(rsmd.getColumnName(i) + "   "); //prints 
-                }
                 System.out.print("\n");
-                while(rs1.next()){
-                    for(int i = 1; i <= column_numb; i++){
-                        System.out.print(rs1.getString(i) + "   "); //prints 
-                    }
-                    System.out.println(); 
-                } 
+                System.out.print("\n");
+                System.out.print("      MENU\n");
+                System.out.print("Each of the actions below has a corresponding number associated with it.\n");
+                System.out.print("Type in the number of the desired action and click enter to be directed");
+                System.out.println("\n");
+                System.out.print("[1] Policies");
+                System.out.print("[2] Customers");
+                System.out.print("[3] Claims");
+                System.out.println("\n");
+                int action_id = myScanner.nextInt() ;
+                myScanner.nextLine();
+                switch (action_id) {
+                    case 1:
+                        //Query to fetch all policies. 
+                        Policy policy_class = new Policy() ;
+                        policy_class.printPolicy(con);
+                        //last step close the connection object  
+                        con.close();  
+                        break;
+                    case 2:
+                        System.out.print("[2] Customers");
+                        break;
+                    case 3:
+                        System.out.print("[3] Claims");
+                        break;
+                    default:
+                        break;
+                }
 
+
+
+                
+ 
                 //last step close the connection object  
                 con.close();  
+            
                     
             }
             //catches exceptions caused by incorrectly inputted query parameters
@@ -80,6 +80,13 @@ class Main {
                 //System.out.println(dataExc);
                 System.out.println("The User has inputted invalid data. Double check that the start and end dates");
                 System.out.println("you have inputted are real dates between  04-Jan-2010  and  30-Dec-2016. \n");
+                
+            }
+            //catches exceptions caused by incorrectly inputted login info
+            catch(SQLException logginExc){
+                //System.out.println(logginExc);
+                System.out.println("The User has inputted invalid login information. Double check that your username");
+                System.out.println("and password are correct. Password's are usually \"P[insertStudentLIN]\".\n");
                 
             }
             //ambiguous exception 
