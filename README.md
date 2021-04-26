@@ -8,7 +8,10 @@ Instructions to Run Project:
      Make sure that youve transferred all the necessary .class files Main uses
 4th: Run  "java -jar Main.jar"
 
-
+From Main: 
+javac Main.java ; mv Main.class CorpManagement.class CustomerAction.class ../brp221/ ; 
+cd ../brp221/ ; jar cfmv Main.jar Manifest.txt Main.class CorpManagement.class CustomerAction.class;
+java -jar Main.jar 
 
 Future Queries:
 

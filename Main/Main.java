@@ -50,6 +50,7 @@ class Main {
                 int action_id = myScanner.nextInt() ;
                 myScanner.nextLine();
                 switch (action_id) {
+                    //Corporate Management
                     case 1:
                         CorpManagement corp_interface = new CorpManagement() ;
                         System.out.println("\n");
@@ -80,22 +81,39 @@ class Main {
                             case 2:
                             case 3:
                         }
-                        con.close();  
-                        break;
+                    //Customer Interaction
                     case 2:
-                        System.out.print("[2] Customers");
-                        break;
+                        CustomerAction cust_interface = new CustomerAction() ;
+                        System.out.println("\n");
+                        System.out.println("Would you like to :");
+                        System.out.println("\n");
+                        System.out.println("[1] Add a new customer");
+                        System.out.println("[2] Add/Drop a policy");
+                        System.out.println("[3] View current policies");
+                        int choice_id_2= myScanner.nextInt() ;
+                        myScanner.nextLine();
+                        switch(choice_id_2){
+                            case 1:
+                                System.out.println("Input customer's bio in less than 50 chars: "); 
+                                String bio = myScanner.nextLine() ;
+                                while(bio.length() >= 50){
+                                    System.out.println("Bio should be less than 50 chars ");
+                                    bio = myScanner.nextLine() ;
+                                }
+                                cust_interface.add_customer(con, bio);
+                    //Agent
                     case 3:
                         System.out.print("[3] Claims");
                         break;
+                    //Adjuster
                     default:
                         break;
-                }
+                        }
 
 
 
                 
- 
+                }
                 //last step close the connection object  
                 con.close();  
             
