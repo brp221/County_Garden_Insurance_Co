@@ -38,22 +38,48 @@ class Main {
                 System.out.println("Connection to the DB SUCCESSFUL!");
                 System.out.print("\n");
                 System.out.print("\n");
-                System.out.print("      MENU\n");
+                System.out.print("MENU\n");
                 System.out.print("Each of the actions below has a corresponding number associated with it.\n");
                 System.out.print("Type in the number of the desired action and click enter to be directed");
                 System.out.println("\n");
-                System.out.print("[1] Policies");
-                System.out.print("[2] Customers");
-                System.out.print("[3] Claims");
+                System.out.println("[1] Corporate Management");
+                System.out.println("[2] Customer Interaction");
+                System.out.println("[3] Agent");
+                System.out.println("[3] Adjuster");
                 System.out.println("\n");
                 int action_id = myScanner.nextInt() ;
                 myScanner.nextLine();
                 switch (action_id) {
                     case 1:
-                        //Query to fetch all policies. 
-                        Policy policy_class = new Policy() ;
-                        policy_class.printPolicy(con);
-                        //last step close the connection object  
+                        CorpManagement corp_interface = new CorpManagement() ;
+                        System.out.println("\n");
+                        System.out.println("Would you like to :");
+                        System.out.println("\n");
+                        System.out.println("[1] Get a report of revenue for certain time frame");
+                        System.out.println("[2] Get a report of paid claims");
+                        System.out.println("[3] Get a report of unresolved claims ");
+                        int choice_id = myScanner.nextInt() ;
+                        myScanner.nextLine();
+                        switch(choice_id){
+                            case 1:
+                                System.out.println("Input starting and ending dates for stock price data: "); 
+                                System.out.println("Enter start date in Oracle standard format (dd-MON-yy): "); 
+                                String start_date = myScanner.nextLine() ;
+                                //keep asking if the date format isn't correct
+                                while(!format_check(start_date)){
+                                    System.out.println("The start date should be in (dd-MON-yyyy) format: ");
+                                    start_date = myScanner.nextLine() ;
+                                }
+                                System.out.println("Enter end date in Oracle standard format (dd-MON-yyyy): "); 
+                                String end_date = myScanner.nextLine() ;
+                                while(!format_check(end_date)){
+                                    System.out.println("The end date should be in (dd-MON-yyyy) format: ");
+                                    end_date = myScanner.nextLine() ;
+                                }
+                                corp_interface.revenue_report(con, start_date, end_date);
+                            case 2:
+                            case 3:
+                        }
                         con.close();  
                         break;
                     case 2:
@@ -105,17 +131,19 @@ class Main {
             if(!Character.isDigit(date.charAt(0)) || 
                 !Character.isDigit(date.charAt(1)) ||
                 !Character.isDigit(date.charAt(7)) ||
-                !Character.isDigit(date.charAt(8)) ){
-            System.out.println("The first two and the last 2 characters should be a digit\n");
-            System.out.println("Are all of these chars?: " + date.charAt(0) + " " + date.charAt(1)+ " " + date.charAt(7) + " " + date.charAt(8)+ "\n");
+                !Character.isDigit(date.charAt(8)) ||
+                !Character.isDigit(date.charAt(9)) ||
+                !Character.isDigit(date.charAt(10))){
+            System.out.println("The first two and the last 4 characters should be a digit\n");
+            System.out.println("Are all of these chars?: " + date.charAt(0) + " " + date.charAt(1)+ " " + date.charAt(7) + " " + date.charAt(8)+ " " + date.charAt(9) + " " + date.charAt(10)+ "\n");
             return false ;
             }
             //day as int
             int day = Integer.parseInt(date.substring(0, 2));
             //year as int 
             int year = Integer.parseInt(date.substring(7,date.length()));
-            if(day>31 || day <1 || year<10 || year>16){
-                System.out.println("The day should be between 1 & 31 and the year should be between 10 & 16\n");
+            if(day>31 || day <1){
+                System.out.println("The day should be between 1 & 31");
                 System.out.println("day: " + day + " year: " + year + "\n");
                 return false;
             }

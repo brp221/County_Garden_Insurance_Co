@@ -30,7 +30,8 @@ create table Payment(
     ID int not null, 
     policy_id int not null,
     date_paid Date not null,
-    paymnt_method varchar(10),
+    method varchar(10),
+    amount float not null,
     Primary Key(ID)
 );
 
@@ -51,8 +52,10 @@ create table Claim(
     ID int not null,
     customer_id int not null,
     date_paid Date not null,
-    status varchar(15)not null,
+    status varchar(15) not null,
+    summary varchar(50) not null,
     adjuster_id int not null,
+    tot_amount float not null,
     Primary Key(ID)
 );
 
@@ -75,12 +78,6 @@ create table Claim_Payments(
     ID int not null,
     claim_id int not null,
     company_liability float, 
-    tot_sum float,
     Primary Key(ID)
 );
-
-
-
-
-
 
