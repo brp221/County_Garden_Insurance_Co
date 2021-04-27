@@ -30,7 +30,7 @@ Interface 3: Agent
 
 Interface 4: Adjuster
             Query 9: 
-            Identify claims which haven't been paid since enter date.
+            Assign outsourcing entities to certain claims 
 
 
 

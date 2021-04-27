@@ -1,10 +1,12 @@
 import java.sql.*;
 import java.util.*;
 
+
 public class Agent {
     public void customers_pending_claims(Connection con)
     {
         try{
+            System.out.println("\n");
             PreparedStatement prep_stmnt1=con.prepareStatement("select customer.ID,customer.bio from customer inner join claim on customer.id = claim.customer_id where claim.status = 'ONGOING'");  
             ResultSet rs1=prep_stmnt1.executeQuery();  
             ResultSetMetaData rsmd = rs1.getMetaData();

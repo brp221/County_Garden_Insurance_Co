@@ -44,8 +44,8 @@ class Main {
                 System.out.println("\n");
                 System.out.println("[1] Corporate Management");
                 System.out.println("[2] Customer Interaction");
-                System.out.println("[3] Adjuster");
                 System.out.println("[3] Agent");
+                System.out.println("[4] Adjuster");
                 System.out.println("\n");
                 int action_id = myScanner.nextInt() ;
                 myScanner.nextLine();
@@ -106,10 +106,10 @@ class Main {
                                 }
                                 cust_interface.add_customer(con, bio);
                         }
-                    //Adjuster
+                    //Agent
                     case 3:
-                        System.out.print("[3] Adjuster");
-                        Adjuster adjuster_intrf = new Adjuster() ;
+                        System.out.print("[3] Agent");
+                        Agent agent_intrface = new Agent() ;
                         System.out.println("\n");
                         System.out.println("Would you like to :");
                         System.out.println("\n");
@@ -118,17 +118,48 @@ class Main {
                         myScanner.nextLine();
                         switch(choice_id_3){
                             case 1:
-                                adjuster_intrf.customers_pending_claims(con);
+                            agent_intrface.customers_pending_claims(con);
+                        }
                         break;
+                    
                     //Adjuster
                     case 4:
-
-                        break;
+                        System.out.print("[4] Adjuster");
+                        Adjuster adjuster_intrf = new Adjuster() ;
+                        System.out.println("\n");
+                        System.out.println("Would you like to :");
+                        System.out.println("\n");
+                        System.out.println("[1] Assign Outsourcing entities to a claim");
+                        int choice_id_4= myScanner.nextInt() ;
+                        myScanner.nextLine();
+                        switch(choice_id_4){
+                            case 1:
+                            try{
+                                PreparedStatement prep_stmnt1=con.prepareStatement("select * from claim");  
+                                ResultSet rs1=prep_stmnt1.executeQuery();  
+                                ResultSetMetaData rsmd = rs1.getMetaData();
+                                int column_numb = rsmd.getColumnCount();
+                                for(int i = 1; i <= column_numb; i++){
+                                    System.out.print(rsmd.getColumnName(i) + "   "); //prints 
+                                }
+                                System.out.print("\n");
+                                while(rs1.next()){
+                                    for(int i = 1; i <= column_numb; i++){
+                                        System.out.print(rs1.getString(i) + "   "); //prints 
+                                    }
+                                    System.out.println(); 
+                                } 
+                            }
+                            //catches exceptions caused by incorrectly inputted login info
+                            catch(SQLException logginExc){
+                                //System.out.println(logginExc);
+                                System.out.println("\n");
+                            }
+                                System.out.println("\n");
+                                adjuster_intrf.assign_outcrng(con);
                         }
+                        break;
 
-
-
-                
                 }
                 //last step close the connection object  
                 con.close();  
