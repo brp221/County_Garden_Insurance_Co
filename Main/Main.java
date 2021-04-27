@@ -44,8 +44,8 @@ class Main {
                 System.out.println("\n");
                 System.out.println("[1] Corporate Management");
                 System.out.println("[2] Customer Interaction");
-                System.out.println("[3] Agent");
                 System.out.println("[3] Adjuster");
+                System.out.println("[3] Agent");
                 System.out.println("\n");
                 int action_id = myScanner.nextInt() ;
                 myScanner.nextLine();
@@ -79,7 +79,11 @@ class Main {
                                 }
                                 corp_interface.revenue_report(con, start_date, end_date);
                             case 2:
+                                System.out.println("Claims Resolved Report :\n");
+                                corp_interface.claims_resolved_report(con);
                             case 3:
+                                System.out.println("Claims Ongoing Report :\n");
+                                corp_interface.claims_ongoing_report(con);
                         }
                     //Customer Interaction
                     case 2:
@@ -101,12 +105,24 @@ class Main {
                                     bio = myScanner.nextLine() ;
                                 }
                                 cust_interface.add_customer(con, bio);
-                    //Agent
+                        }
+                    //Adjuster
                     case 3:
-                        System.out.print("[3] Claims");
+                        System.out.print("[3] Adjuster");
+                        Adjuster adjuster_intrf = new Adjuster() ;
+                        System.out.println("\n");
+                        System.out.println("Would you like to :");
+                        System.out.println("\n");
+                        System.out.println("[1] Get customers with pending claims ");
+                        int choice_id_3= myScanner.nextInt() ;
+                        myScanner.nextLine();
+                        switch(choice_id_3){
+                            case 1:
+                                adjuster_intrf.customers_pending_claims(con);
                         break;
                     //Adjuster
-                    default:
+                    case 4:
+
                         break;
                         }
 
@@ -140,8 +156,8 @@ class Main {
                 e.printStackTrace();
             }  
         }   
-    }  
-    
+     
+    }
 
     //helper function for verifying the format of date inputted by user
     public static boolean format_check(String date){
@@ -203,4 +219,5 @@ class Main {
             return false ;
         }
     }
-    }
+
+}

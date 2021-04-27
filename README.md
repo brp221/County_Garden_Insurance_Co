@@ -10,12 +10,8 @@ Instructions to Run Project:
 
 From Main: 
 javac Main.java ; mv Main.class CorpManagement.class CustomerAction.class ../brp221/ ; 
-cd ../brp221/ ; jar cfmv Main.jar Manifest.txt Main.class CorpManagement.class CustomerAction.class;
+cd ../brp221/ ; jar cfmv Main.jar Manifest.txt Main.class CorpManagement.class CustomerAction.class Adjuster.class Agent.class;
 java -jar Main.jar 
 
-Future Queries:
 
-
-Current Queries:
-Policy
 
