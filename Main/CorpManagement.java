@@ -56,11 +56,8 @@ public class CorpManagement {
                 PreparedStatement prep_stmnt3=con.prepareStatement("SELECT SUM(TOT_AMOUNT) FROM claim inner join claim_payments on claim_payments.id = claim.id where claim.status = 'RESOLVED' ");  
                 ResultSet rs3=prep_stmnt3.executeQuery();  
                 while(rs3.next()){
-                    System.out.format("Total amount in Claims paid by County Gardens : %f \n", rs3.getDouble(1)); 
-                    System.out.format("Total amount in Claims paid by County Gardens : %f \n", rs3.getFloat(1)); 
-                    System.out.format("Total amount in Claims paid by County Gardens : %f \n", rs3.getString(1)); 
-                    System.out.format("Total amount in Claims paid by County Gardens : %f \n", rs3.getDouble("SUM(TOT_AMOUNT)")); 
-
+                    System.out.format("Total Claims paid by County Gardens : %f \n", rs3.getDouble(1)); 
+                    System.out.format("Total Claims paid by County Gardens : %f \n", rs3.getFloat(1)); 
                 } 
 
                 /**ALL CLAIMS*/

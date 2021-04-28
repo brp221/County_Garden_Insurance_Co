@@ -42,128 +42,153 @@ class Main {
                 System.out.print("Each of the actions below has a corresponding number associated with it.\n");
                 System.out.print("Type in the number of the desired action and click enter to be directed");
                 System.out.println("\n");
-                System.out.println("[1] Corporate Management");
-                System.out.println("[2] Customer Interaction");
-                System.out.println("[3] Agent");
-                System.out.println("[4] Adjuster");
-                System.out.println("\n");
-                int action_id = myScanner.nextInt() ;
-                myScanner.nextLine();
-                switch (action_id) {
-                    //Corporate Management
-                    case 1:
-                        CorpManagement corp_interface = new CorpManagement() ;
-                        System.out.println("\n");
-                        System.out.println("Would you like to :");
-                        System.out.println("\n");
-                        System.out.println("[1] Get a report of revenue for certain time frame");
-                        System.out.println("[2] Get a report of paid claims");
-                        System.out.println("[3] Get a report of unresolved claims ");
-                        int choice_id = myScanner.nextInt() ;
-                        myScanner.nextLine();
-                        switch(choice_id){
-                            case 1:
-                                System.out.println("Input starting and ending dates for stock price data: "); 
-                                System.out.println("Enter start date in Oracle standard format (dd-MON-yy): "); 
-                                String start_date = myScanner.nextLine() ;
-                                //keep asking if the date format isn't correct
-                                while(!format_check(start_date)){
-                                    System.out.println("The start date should be in (dd-MON-yyyy) format: ");
-                                    start_date = myScanner.nextLine() ;
-                                }
-                                System.out.println("Enter end date in Oracle standard format (dd-MON-yyyy): "); 
-                                String end_date = myScanner.nextLine() ;
-                                while(!format_check(end_date)){
-                                    System.out.println("The end date should be in (dd-MON-yyyy) format: ");
-                                    end_date = myScanner.nextLine() ;
-                                }
-                                corp_interface.revenue_report(con, start_date, end_date);
-                            case 2:
-                                System.out.println("Claims Resolved Report :\n");
-                                corp_interface.claims_resolved_report(con);
-                            case 3:
-                                System.out.println("Claims Ongoing Report :\n");
-                                corp_interface.claims_ongoing_report(con);
-                        }
-                    //Customer Interaction
-                    case 2:
-                        CustomerAction cust_interface = new CustomerAction() ;
-                        System.out.println("\n");
-                        System.out.println("Would you like to :");
-                        System.out.println("\n");
-                        System.out.println("[1] Add a new customer");
-                        System.out.println("[2] Add/Drop a policy");
-                        System.out.println("[3] View current policies");
-                        int choice_id_2= myScanner.nextInt() ;
-                        myScanner.nextLine();
-                        switch(choice_id_2){
-                            case 1:
-                                System.out.println("Input customer's bio in less than 50 chars: "); 
-                                String bio = myScanner.nextLine() ;
-                                while(bio.length() >= 50){
-                                    System.out.println("Bio should be less than 50 chars ");
-                                    bio = myScanner.nextLine() ;
-                                }
-                                cust_interface.add_customer(con, bio);
-                        }
-                    //Agent
-                    case 3:
-                        System.out.print("[3] Agent");
-                        Agent agent_intrface = new Agent() ;
-                        System.out.println("\n");
-                        System.out.println("Would you like to :");
-                        System.out.println("\n");
-                        System.out.println("[1] Get customers with pending claims ");
-                        int choice_id_3= myScanner.nextInt() ;
-                        myScanner.nextLine();
-                        switch(choice_id_3){
-                            case 1:
-                            agent_intrface.customers_pending_claims(con);
-                        }
-                        break;
-                    
-                    //Adjuster
-                    case 4:
-                        System.out.print("[4] Adjuster");
-                        Adjuster adjuster_intrf = new Adjuster() ;
-                        System.out.println("\n");
-                        System.out.println("Would you like to :");
-                        System.out.println("\n");
-                        System.out.println("[1] Assign Outsourcing entities to a claim");
-                        int choice_id_4= myScanner.nextInt() ;
-                        myScanner.nextLine();
-                        switch(choice_id_4){
-                            case 1:
-                            try{
-                                PreparedStatement prep_stmnt1=con.prepareStatement("select * from claim");  
-                                ResultSet rs1=prep_stmnt1.executeQuery();  
-                                ResultSetMetaData rsmd = rs1.getMetaData();
-                                int column_numb = rsmd.getColumnCount();
-                                for(int i = 1; i <= column_numb; i++){
-                                    System.out.print(rsmd.getColumnName(i) + "   "); //prints 
-                                }
-                                System.out.print("\n");
-                                while(rs1.next()){
-                                    for(int i = 1; i <= column_numb; i++){
-                                        System.out.print(rs1.getString(i) + "   "); //prints 
-                                    }
-                                    System.out.println(); 
-                                } 
-                            }
-                            //catches exceptions caused by incorrectly inputted login info
-                            catch(SQLException logginExc){
-                                //System.out.println(logginExc);
-                                System.out.println("\n");
-                            }
-                                System.out.println("\n");
-                                adjuster_intrf.assign_outcrng(con);
-                        }
-                        break;
+                boolean active = true;
+                while(active){
+                    System.out.println("[1] Corporate Management");
+                    System.out.println("[2] Customer Interaction");
+                    System.out.println("[3] Agent");
+                    System.out.println("[4] Adjuster");
+                    System.out.println("[5] QUIT Program");
 
+                    System.out.println("\n");
+                    int action_id = myScanner.nextInt() ;
+                    myScanner.nextLine();
+                    switch (action_id) {
+                        //Corporate Management
+                        case 1:
+                            CorpManagement corp_interface = new CorpManagement() ;
+                            System.out.println("\n");
+                            System.out.println("Would you like to :");
+                            System.out.println("\n");
+                            System.out.println("[1] Get a report of revenue for certain time frame");
+                            System.out.println("[2] Get a report of paid claims");
+                            System.out.println("[3] Get a report of unresolved claims ");
+                            int choice_id = myScanner.nextInt() ;
+                            myScanner.nextLine();
+                            switch(choice_id){
+                                case 1:
+                                    System.out.println("Input starting and ending dates for a revenue report  : "); 
+                                    System.out.println("Enter start date in Oracle standard format (dd-MON-yy): "); 
+                                    String start_date = myScanner.nextLine() ;
+                                    //keep asking if the date format isn't correct
+                                    while(!format_check(start_date)){
+                                        System.out.println("The start date should be in (dd-Mon-yyyy) format: ");
+                                        start_date = myScanner.nextLine() ;
+                                    }
+                                    System.out.println("Enter end date in Oracle standard format (dd-Mon-yyyy): "); 
+                                    String end_date = myScanner.nextLine() ;
+                                    while(!format_check(end_date)){
+                                        System.out.println("The end date should be in (dd-Mon-yyyy) format: ");
+                                        end_date = myScanner.nextLine() ;
+                                    }
+                                    corp_interface.revenue_report(con, start_date, end_date);
+                                    break;
+                                case 2:
+                                    System.out.println("Claims Resolved Report :\n");
+                                    corp_interface.claims_resolved_report(con);
+                                    break;
+                                case 3:
+                                    System.out.println("Claims Ongoing Report :\n");
+                                    corp_interface.claims_ongoing_report(con);
+                                    break;
+                            }
+                            break;
+                            
+                            //Customer Interaction
+                        case 2:
+                            CustomerAction cust_interface = new CustomerAction() ;
+                            System.out.println("\n");
+                            System.out.println("Would you like to :");
+                            System.out.println("\n");
+                            System.out.println("[1] Add a new customer");
+                            System.out.println("[2] Add/Drop a policy");
+                            System.out.println("[3] View current policies");
+                            int choice_id_2= myScanner.nextInt() ;
+                            myScanner.nextLine();
+                            switch(choice_id_2){
+                                case 1:
+                                    System.out.println("Input customer's bio in less than 50 chars: "); 
+                                    String bio = myScanner.nextLine() ;
+                                    while(bio.length() >= 50){
+                                        System.out.println("Bio should be less than 50 chars ");
+                                        bio = myScanner.nextLine() ;
+                                    }
+                                    cust_interface.add_customer(con, bio);
+                                    break;
+                                case 2:
+                                    System.out.println("To add your policy, please give me your unique customer ID "); 
+                                    System.out.println("(IN AN ACTUAL APPLICATION THIS IS WHERE AUTHENTICATION TAKES PLACE 0:) \n instead I will REMIND you what your customer ID is "); 
+                                    break;
+                            }
+                            break;
+                        //Agent
+                        case 3:
+                            System.out.print("[3] Agent");
+                            Agent agent_intrface = new Agent() ;
+                            System.out.println("\n");
+                            System.out.println("Would you like to :");
+                            System.out.println("\n");
+                            System.out.println("[1] Get customers with pending claims ");
+                            int choice_id_3= myScanner.nextInt() ;
+                            myScanner.nextLine();
+                            switch(choice_id_3){
+                                case 1:
+                                agent_intrface.customers_pending_claims(con);
+                                break;
+                            }
+                            break;
+                        
+                        //Adjuster
+                        case 4:
+                            System.out.print("[4] Adjuster");
+                            Adjuster adjuster_intrf = new Adjuster() ;
+                            System.out.println("\n");
+                            System.out.println("Would you like to :");
+                            System.out.println("\n");
+                            System.out.println("[1] Assign Outsourcing entities to a claim");
+                            int choice_id_4= myScanner.nextInt() ;
+                            myScanner.nextLine();
+                            switch(choice_id_4){
+                                case 1:
+                                    try{
+                                        PreparedStatement prep_stmnt1=con.prepareStatement("select * from claim");  
+                                        ResultSet rs1=prep_stmnt1.executeQuery();  
+                                        ResultSetMetaData rsmd = rs1.getMetaData();
+                                        int column_numb = rsmd.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs1.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs1.getString(i) + "   "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } 
+                                    }
+                                    //catches exceptions caused by incorrectly inputted login info
+                                    catch(SQLException logginExc){
+                                        //System.out.println(logginExc);
+                                        System.out.println("\n");
+                                    }
+                                    System.out.println("\n");
+                                    adjuster_intrf.assign_outcrng(con);
+                                    break;
+                            }
+                            break;
+                        case 5:
+                            System.out.println("Are you sure that you want to quit :'(  ?");
+                            System.out.println("[y] \n [n]");
+                            String answer = myScanner.nextLine();
+                            if(answer.equals("y")){
+                                active = false;
+                            }
+                    }
+                    
                 }
                 //last step close the connection object  
                 con.close();  
-            
+                
                     
             }
             //catches exceptions caused by incorrectly inputted query parameters
@@ -245,6 +270,12 @@ class Main {
         }    
         //incorrect formatting of the date
         catch(StringIndexOutOfBoundsException exc){
+            System.out.println("\nThe User has inputted invalid data. Double check that the start and end dates");
+            System.out.println("you have inputted are real dates of the following format dd-Mon-yy. dd and yy should be digits!! \n");
+            return false ;
+        }
+    
+        catch(NumberFormatException exc2){
             System.out.println("\nThe User has inputted invalid data. Double check that the start and end dates");
             System.out.println("you have inputted are real dates of the following format dd-Mon-yy. dd and yy should be digits!! \n");
             return false ;

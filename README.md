@@ -9,7 +9,7 @@ Instructions to Run Project:
 4th: Run  "java -jar Main.jar"
 
 From Main: 
-javac Main.java ; mv Main.class CorpManagement.class Adjuster.class Agent.class CustomerAction.class ../brp221/ ; 
+javac Main.java ; mv -i Main.class CorpManagement.class Adjuster.class Agent.class CustomerAction.class ../brp221/ ; 
 cd ../brp221/ ; jar cfmv Main.jar Manifest.txt Main.class CorpManagement.class CustomerAction.class Adjuster.class Agent.class;
 java -jar Main.jar 
 
