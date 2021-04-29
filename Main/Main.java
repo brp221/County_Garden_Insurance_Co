@@ -201,7 +201,7 @@ class Main {
                                         //System.out.println("\n");
                                     }
                                     //prompt user to give customer_id
-                                    System.out.println("Please type in your customer_id so that we can display all of your beneficaries:"); 
+                                    System.out.println("Please type in your customer_id so that we can display all of your beneficiaries:"); 
                                     int customer_id2 = myScanner.nextInt() ;
                                     try{
                                         
@@ -231,7 +231,7 @@ class Main {
                                     //prompt user to give customer_id
                                     System.out.println("Please type the ID of the beneficiary you'd like to delete :"); 
                                     int ben_id = myScanner.nextInt() ;
-                                    cust_interface.del_beneficiary(con, ben_id, customer_id2);
+                                    cust_interface.del_beneficiary(con, customer_id2,ben_id);
                                     break;
                             //Add a policy
                             
