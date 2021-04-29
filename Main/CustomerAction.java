@@ -2,10 +2,11 @@ import java.sql.*;
 import java.util.*;
 
 public class CustomerAction {
-    public void add_customer(Connection con, String bio)
-    {
+    public void del_beneficiary(Connection con, int customer_id,int beneficiary_id)
+    {   System.out.println("\nBOOP\n");
+        
         try{
-            PreparedStatement prep_stmnt1=con.prepareStatement("select max(id) from customer");  
+            PreparedStatement prep_stmnt1=con.prepareStatement("delete from beneficiary where ");  
             ResultSet rs1=prep_stmnt1.executeQuery();  
             int agent_id = 0;
             while(rs1.next()){
@@ -54,6 +55,7 @@ public class CustomerAction {
             System.out.println(logginExc);
             System.out.println("\n");
         }
+        */
     };
 
     public void add_policy(Connection con,int customer_id){
@@ -102,4 +104,31 @@ public class CustomerAction {
             System.out.println("\n");
         }
     }
+
+    public void benfcrs_by_policy_id(Connection con, int policy_id){
+        try{
+            System.out.println("\n");
+            PreparedStatement prep_stmnt1=con.prepareStatement("select * from beneficiary where policy_id = ?");  
+            prep_stmnt1.setInt(1, policy_id);
+            ResultSet rs1=prep_stmnt1.executeQuery();  
+            ResultSetMetaData rsmd = rs1.getMetaData();
+                int column_numb = rsmd.getColumnCount();
+                for(int i = 1; i <= column_numb; i++){
+                    System.out.print(rsmd.getColumnName(i) + "   "); //prints 
+                }
+                System.out.print("\n");
+                while(rs1.next()){
+                    for(int i = 1; i <= column_numb; i++){
+                        System.out.print(rs1.getString(i) + "   "); //prints 
+                    }
+                    System.out.println(); 
+                } 
+                System.out.println(); 
+        }
+        //catches exceptions caused by incorrectly inputted login info
+        catch(SQLException logginExc){
+            System.out.println(logginExc);
+            System.out.println("\n");
+        }
+    };
 }

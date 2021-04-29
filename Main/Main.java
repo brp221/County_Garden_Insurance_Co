@@ -58,6 +58,9 @@ class Main {
                     switch (action_id) {
                         //Corporate Management
                         case 1:
+                        
+                            System.out.println("----------------------------------------------------------------------------------------------");
+                            System.out.println("[1] Corporate Management Interface ");
                             CorpManagement corp_interface = new CorpManagement() ;
                             System.out.println("\n");
                             System.out.println("Would you like to :");
@@ -65,6 +68,7 @@ class Main {
                             System.out.println("[1] Get a report of revenue for certain time frame");
                             System.out.println("[2] Get a report of paid claims");
                             System.out.println("[3] Get a report of unresolved claims ");
+                            System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id = myScanner.nextInt() ;
                             myScanner.nextLine();
                             switch(choice_id){
@@ -96,28 +100,22 @@ class Main {
                             }
                             break;
                             
-                            //Customer Interaction
+                        //Customer Interaction
                         case 2:
+                            System.out.println("----------------------------------------------------------------------------------------------");
+                            System.out.println("[1] Customer Interaction Interface");
                             CustomerAction cust_interface = new CustomerAction() ;
                             System.out.println("\n");
                             System.out.println("Would you like to :");
                             System.out.println("\n");
-                            System.out.println("[1] Add a new customer");
-                            System.out.println("[2] Add/Drop a policy");
-                            System.out.println("[3] View current policies by customer_id");
+                            System.out.println("[1] Add a policy");
+                            System.out.println("[2] View current beneficiaries by policy_id");
+                            System.out.println("[3] Delete a beneficiary");
+                            System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id_2= myScanner.nextInt() ;
                             myScanner.nextLine();
                             switch(choice_id_2){
                                 case 1:
-                                    System.out.println("Input customer's bio in less than 50 chars: "); 
-                                    String bio = myScanner.nextLine() ;
-                                    while(bio.length() >= 50){
-                                        System.out.println("Bio should be less than 50 chars ");
-                                        bio = myScanner.nextLine() ;
-                                    }
-                                    cust_interface.add_customer(con, bio);
-                                    break;
-                                case 2:
                                     System.out.println("To add your policy, please give me your unique customer ID "); 
                                     System.out.println("(IN AN ACTUAL APPLICATION THIS IS WHERE AUTHENTICATION TAKES PLACE 0:) \n instead I will REMIND you what your customer ID is "); 
                                     System.out.println("\n");
@@ -147,12 +145,11 @@ class Main {
                                     int customer_id = myScanner.nextInt();
                                     cust_interface.add_policy(con, customer_id);
                                     break;
-                                case 3:
-                                    System.out.println("To view all of your policies, please give me your unique customer ID "); 
-                                    System.out.println("(IN AN ACTUAL APPLICATION THIS IS WHERE AUTHENTICATION TAKES PLACE 0:) \n instead I will REMIND you what your customer ID is "); 
+                                //View current beneficiaries by policy_id
+                                case 2:
                                     System.out.println("\n");
                                     try{
-                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from customer");  
+                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from policy");  
                                         ResultSet rs3=prep_stmnt3.executeQuery();  
                                         ResultSetMetaData rsmd3 = rs3.getMetaData();
                                         int column_numb = rsmd3.getColumnCount();
@@ -172,33 +169,160 @@ class Main {
                                         //System.out.println(logginExc);
                                         System.out.println("\n");
                                     }
-                            }
+                                    System.out.println("To view all of your beneficiaries, please give me any of your unique policy ID "); 
+                                    System.out.println("\n");
+                                    int policy_id = myScanner.nextInt();
+                                    cust_interface.benfcrs_by_policy_id(con, policy_id);
+                                    break ;
+                                //Delete a beneficiary
+                                case 3:
+                                    
+                                System.out.println(); 
+                                    try{
+                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from customer");  
+                                        ResultSet rs3=prep_stmnt3.executeQuery();  
+                                        ResultSetMetaData rsmd3 = rs3.getMetaData();
+                                        int column_numb = rsmd3.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd3.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs3.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs3.getString(i) + "   "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } 
+                                        System.out.println(); 
+                                    }
+                                    //catches exceptions caused by incorrectly inputted login info
+                                    catch(SQLException logginExc){
+                                        System.out.println(logginExc);
+                                        //System.out.println("\n");
+                                    }
+                                    //prompt user to give customer_id
+                                    System.out.println("Please type in your customer_id so that we can display all of your beneficaries:"); 
+                                    int customer_id2 = myScanner.nextInt() ;
+                                    try{
+                                        
+                                        
+                                        String sql_query = "select policy.id as policy_id, policy.customer_id, policy.active, beneficiary.id as beneficiary_id, beneficiary.overview as overview from policy inner join beneficiary on policy.id = beneficiary.policy_id where policy.customer_id = ?" ;
+                                        PreparedStatement prep_stmnt1 = con.prepareStatement(sql_query);
+                                        
+                                        prep_stmnt1.setInt(1,customer_id2);
+                                        ResultSet rs1=prep_stmnt1.executeQuery();  
+                                        
+                                        ResultSetMetaData rsmd1 = rs1.getMetaData();
+                                        int column_numb = rsmd1.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd1.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs1.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs1.getString(i) + "              "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } }
+                                    catch(SQLException exc){
+                                        System.out.println(exc);
+                                    }
+                                    System.out.println(); 
+                                    //prompt user to give customer_id
+                                    System.out.println("Please type the ID of the beneficiary you'd like to delete :"); 
+                                    int ben_id = myScanner.nextInt() ;
+                                    cust_interface.del_beneficiary(con, ben_id, customer_id2);
+                                    break;
+                            //Add a policy
+                            
+                                }
                             break;
+                        
                         //Agent
                         case 3:
+                            System.out.println("----------------------------------------------------------------------------------------------");
                             System.out.print("[3] Agent");
                             Agent agent_intrface = new Agent() ;
                             System.out.println("\n");
                             System.out.println("Would you like to :");
                             System.out.println("\n");
                             System.out.println("[1] Get customers with pending claims ");
+                            System.out.println("[2] Deactivate a customer's policy");
+                            System.out.println("[3] Remove a customer from the database");
+                            System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id_3= myScanner.nextInt() ;
                             myScanner.nextLine();
                             switch(choice_id_3){
+                                //get customers with pending claims
                                 case 1:
-                                agent_intrface.customers_pending_claims(con);
-                                break;
+                                    agent_intrface.customers_pending_claims(con);
+                                    break;
+                                //deactivate a customer's policy
+                                case 2:
+                                    System.out.print("\n");
+                                    try{
+                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from policy");  
+                                        ResultSet rs3=prep_stmnt3.executeQuery();  
+                                        ResultSetMetaData rsmd3 = rs3.getMetaData();
+                                        int column_numb = rsmd3.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd3.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs3.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs3.getString(i) + "          "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } 
+                                    }
+                                    //catches exceptions caused by incorrectly inputted login info
+                                    catch(SQLException logginExc){
+                                        //System.out.println(logginExc);
+                                        System.out.println("\n");
+                                    }
+                                    System.out.println("Type in the policy_id which you want to deactivate: ");
+                                    System.out.print("\n");
+                                    int policy_id= myScanner.nextInt() ;
+                                    // debugging: System.out.format("policy_id is :%d ", policy_id);
+                                    agent_intrface.deactvt_policy(con,policy_id);
+                                    try{
+                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from policy");  
+                                        ResultSet rs3=prep_stmnt3.executeQuery();  
+                                        ResultSetMetaData rsmd3 = rs3.getMetaData();
+                                        int column_numb = rsmd3.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd3.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs3.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs3.getString(i) + "          "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } 
+                                    }
+                                    //catches exceptions caused by incorrectly inputted login info
+                                    catch(SQLException logginExc){
+                                        //System.out.println(logginExc);
+                                        System.out.println("\n");
+                                    }
+                                    break;
+                                //remove a customer from the database    
+                                case 3:
                             }
                             break;
                         
                         //Adjuster
                         case 4:
+                            System.out.println("----------------------------------------------------------------------------------------------");
                             System.out.print("[4] Adjuster");
                             Adjuster adjuster_intrf = new Adjuster() ;
                             System.out.println("\n");
                             System.out.println("Would you like to :");
                             System.out.println("\n");
                             System.out.println("[1] Assign Outsourcing entities to a claim");
+                            System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id_4= myScanner.nextInt() ;
                             myScanner.nextLine();
                             switch(choice_id_4){
