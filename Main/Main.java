@@ -34,7 +34,7 @@ class Main {
                 connected = true;
                 //step3 create the statement object. Now you are ready to run queries. 
                 Statement stmt=con.createStatement(); 
-                
+                System.out.println("----------------------------------------------------------------------------------------------");
                 System.out.println("Connection to the DB SUCCESSFUL!");
                 System.out.print("\n");
                 System.out.print("\n");
@@ -44,11 +44,13 @@ class Main {
                 System.out.println("\n");
                 boolean active = true;
                 while(active){
+                    System.out.println("----------------------------------------------------------------------------------------------");
                     System.out.println("[1] Corporate Management");
                     System.out.println("[2] Customer Interaction");
                     System.out.println("[3] Agent");
                     System.out.println("[4] Adjuster");
                     System.out.println("[5] QUIT Program");
+                    System.out.println("----------------------------------------------------------------------------------------------");
 
                     System.out.println("\n");
                     int action_id = myScanner.nextInt() ;
@@ -102,7 +104,7 @@ class Main {
                             System.out.println("\n");
                             System.out.println("[1] Add a new customer");
                             System.out.println("[2] Add/Drop a policy");
-                            System.out.println("[3] View current policies");
+                            System.out.println("[3] View current policies by customer_id");
                             int choice_id_2= myScanner.nextInt() ;
                             myScanner.nextLine();
                             switch(choice_id_2){
@@ -118,7 +120,58 @@ class Main {
                                 case 2:
                                     System.out.println("To add your policy, please give me your unique customer ID "); 
                                     System.out.println("(IN AN ACTUAL APPLICATION THIS IS WHERE AUTHENTICATION TAKES PLACE 0:) \n instead I will REMIND you what your customer ID is "); 
+                                    System.out.println("\n");
+                                    try{
+                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from customer");  
+                                        ResultSet rs3=prep_stmnt3.executeQuery();  
+                                        ResultSetMetaData rsmd3 = rs3.getMetaData();
+                                        int column_numb = rsmd3.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd3.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs3.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs3.getString(i) + "          "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } 
+                                    }
+                                    //catches exceptions caused by incorrectly inputted login info
+                                    catch(SQLException logginExc){
+                                        //System.out.println(logginExc);
+                                        System.out.println("\n");
+                                    }
+                                    System.out.println("\n");
+                                    System.out.println("Type in your customer_id number :");
+                                    int customer_id = myScanner.nextInt();
+                                    cust_interface.add_policy(con, customer_id);
                                     break;
+                                case 3:
+                                    System.out.println("To view all of your policies, please give me your unique customer ID "); 
+                                    System.out.println("(IN AN ACTUAL APPLICATION THIS IS WHERE AUTHENTICATION TAKES PLACE 0:) \n instead I will REMIND you what your customer ID is "); 
+                                    System.out.println("\n");
+                                    try{
+                                        PreparedStatement prep_stmnt3=con.prepareStatement("select * from customer");  
+                                        ResultSet rs3=prep_stmnt3.executeQuery();  
+                                        ResultSetMetaData rsmd3 = rs3.getMetaData();
+                                        int column_numb = rsmd3.getColumnCount();
+                                        for(int i = 1; i <= column_numb; i++){
+                                            System.out.print(rsmd3.getColumnName(i) + "   "); //prints 
+                                        }
+                                        System.out.print("\n");
+                                        while(rs3.next()){
+                                            for(int i = 1; i <= column_numb; i++){
+                                                System.out.print(rs3.getString(i) + "          "); //prints 
+                                            }
+                                            System.out.println(); 
+                                        } 
+                                    }
+                                    //catches exceptions caused by incorrectly inputted login info
+                                    catch(SQLException logginExc){
+                                        //System.out.println(logginExc);
+                                        System.out.println("\n");
+                                    }
                             }
                             break;
                         //Agent
@@ -178,7 +231,7 @@ class Main {
                             break;
                         case 5:
                             System.out.println("Are you sure that you want to quit :'(  ?");
-                            System.out.println("[y] \n [n]");
+                            System.out.println("[y] \n[n]");
                             String answer = myScanner.nextLine();
                             if(answer.equals("y")){
                                 active = false;
