@@ -67,7 +67,7 @@ class Main {
                             System.out.println("\n");
                             System.out.println("[1] Get a report of revenue for certain time frame");
                             System.out.println("[2] Get a report profitability by customer_id");
-                            System.out.println("[3] Get a report of unresolved claims ");
+                            System.out.println("[3] Amount Claimed by Customer vs Amount Payed by Company vs Insurance Paid by Customer");
                             System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id = myScanner.nextInt() ;
                             myScanner.nextLine();
@@ -94,8 +94,11 @@ class Main {
                                     corp_interface.profitability_by_customer(con);
                                     break;
                                 case 3:
-                                    System.out.println("Claims Ongoing Report :\n");
-                                    //corp_interface.claims_ongoing_report(con);
+                                    System.out.println("Fariness Ratios:\n");
+                                    System.out.println("Nota Bene:\n");
+                                    System.out.print("companyLiability/customerPaid is the ratio of how much the company has paid to each customer for claims and how much the customer has paid for the insurance in total.\n");
+                                    System.out.print("companyLiability/customerClaimed is the ratio of how much the company has paid to each customer for claims made and how much the customer has claimed in total.\n\n");
+                                    corp_interface.fairness_ratios(con);
                                     break;
                             }
                             break;
@@ -365,6 +368,7 @@ class Main {
                                     break;
                                 }
                             break;
+                        //termination of program option
                         case 5:
                             System.out.println("Are you sure that you want to quit :'(  ?");
                             System.out.println("[y] \n[n]");
