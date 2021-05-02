@@ -42,7 +42,7 @@ public class CorpManagement {
             System.out.print("\n");
             while(rs1.next()){
                 for(int i = 1; i <= column_numb; i++){
-                    System.out.print(rs1.getString(i) + "   "); //prints 
+                    System.out.print(rs1.getString(i) + "         "); //prints 
                 }
                 System.out.println(); 
             } 

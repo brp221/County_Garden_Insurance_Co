@@ -3,20 +3,27 @@ import java.util.*;
 
 public class CustomerAction {
     
-    public void add_policy(Connection con,int customer_id){
+    public boolean add_policy(Connection con,int customer_id){
 
 
         try{
-            PreparedStatement prep_stmnt1=con.prepareStatement("select max(id) from policy");  
+            PreparedStatement prep_stmnt1=con.prepareStatement("select max(id),max(customer_id),min(customer_id) from policy");  
             ResultSet rs1=prep_stmnt1.executeQuery();  
             int policy_id = 0;
+            int curr_max_cust_id = 0;
+            int curr_min_cust_id = 0;
             while(rs1.next()){
                 //System.out.format("  agent_id: %d ", agent_id ); 
                 policy_id = 1 + rs1.getInt(1) ;
+                curr_min_cust_id = rs1.getInt(2);
+                curr_max_cust_id = rs1.getInt(3);
+
             } 
             //System.out.format("  agent_id: %d ", agent_id ); 
-
-
+            if((customer_id > curr_max_cust_id)||(customer_id < curr_min_cust_id)){
+                System.out.println("\nThe customer_id you have inputted does not exist ");
+                return false;
+            }
             String sql = "INSERT INTO POLICY(ID,CUSTOMER_ID,ACTIVE) VALUES(?,?,?) " ;
             PreparedStatement prep_stmnt3=con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);  
             prep_stmnt3.setInt(1, policy_id);
@@ -42,11 +49,13 @@ public class CustomerAction {
                 } 
             }
 
+            return true;
         }
         //catches exceptions caused by incorrectly inputted login info
         catch(SQLException logginExc){
             System.out.println(logginExc);
             System.out.println("\n");
+            return false;
         }
     }
 
@@ -78,7 +87,7 @@ public class CustomerAction {
     };
 
     public void del_beneficiary(Connection con, int customer_id,int beneficiary_id)
-    {   System.out.println("\nBOOP\n");
+    {   
         
         try{
             String delete_benef = "delete from (select beneficiary.id as beneficiary_id, policy.id as policy_id, policy.customer_id, policy.active,  beneficiary.overview as overview from policy inner join beneficiary on policy.id = beneficiary.policy_id ) where beneficiary_id = ? and customer_id = ?" ;

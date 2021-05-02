@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.*;
 
 class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         boolean connected = false ;
         Scanner myScanner = new Scanner(System.in);  // Create a Scanner object
         //keep trying to connect until the user is connected
@@ -74,7 +74,7 @@ class Main {
                             switch(choice_id){
                                 case 1:
                                     System.out.println("Input starting and ending dates for a revenue report  : "); 
-                                    System.out.println("Enter start date in Oracle standard format (dd-MON-yy): "); 
+                                    System.out.println("Enter start date in Oracle standard format (dd-Mon-yyyy): "); 
                                     String start_date = myScanner.nextLine() ;
                                     //keep asking if the date format isn't correct
                                     while(!format_check(start_date)){
@@ -128,25 +128,34 @@ class Main {
                                         ResultSetMetaData rsmd3 = rs3.getMetaData();
                                         int column_numb = rsmd3.getColumnCount();
                                         for(int i = 1; i <= column_numb; i++){
-                                            System.out.print(rsmd3.getColumnName(i) + "   "); //prints 
+                                            System.out.print(rsmd3.getColumnName(i) + "             "); //prints 
                                         }
                                         System.out.print("\n");
                                         while(rs3.next()){
                                             for(int i = 1; i <= column_numb; i++){
-                                                System.out.print(rs3.getString(i) + "          "); //prints 
+                                                System.out.print(rs3.getString(i) + "               "); //prints 
                                             }
                                             System.out.println(); 
                                         } 
+                                        System.out.println("\n");
+                                        System.out.println("Type in your customer_id number :");
+                                        int customer_id = myScanner.nextInt();
+                                        while(!cust_interface.add_policy(con, customer_id)){
+                                            System.out.println("Please type in a customer_id that exists >:| customer number:");
+                                            customer_id = myScanner.nextInt();
+                                        }
                                     }
                                     //catches exceptions caused by incorrectly inputted login info
                                     catch(SQLException logginExc){
-                                        //System.out.println(logginExc);
+                                        System.out.println(logginExc);
                                         System.out.println("\n");
                                     }
-                                    System.out.println("\n");
-                                    System.out.println("Type in your customer_id number :");
-                                    int customer_id = myScanner.nextInt();
-                                    cust_interface.add_policy(con, customer_id);
+                                    catch (InputMismatchException e) {
+                                        System.out.println(e);
+                                        System.out.println("\n");
+                                    }
+                                    
+                                    
                                     break;
                                 //View current beneficiaries by policy_id
                                 case 2:
@@ -251,7 +260,7 @@ class Main {
                             System.out.println("\n");
                             System.out.println("[1] Get customers with pending claims ");
                             System.out.println("[2] Deactivate a customer's policy");
-                            System.out.println("[3] Remove a customer from the database");
+                            System.out.println("[3] Add a new customer");
                             System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id_3= myScanner.nextInt() ;
                             myScanner.nextLine();
@@ -313,6 +322,9 @@ class Main {
                                     break;
                                 //remove a customer from the database    
                                 case 3:
+                                    System.out.println("Type in the customer's bio (it can be the customer's name or description) :");
+                                    String bio = myScanner.nextLine();
+                                    agent_intrface.add_customer(con, bio);
                             }
                             break;
                         
