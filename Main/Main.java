@@ -66,7 +66,7 @@ class Main {
                             System.out.println("Would you like to :");
                             System.out.println("\n");
                             System.out.println("[1] Get a report of revenue for certain time frame");
-                            System.out.println("[2] Get a report of paid claims");
+                            System.out.println("[2] Get a report profitability by customer_id");
                             System.out.println("[3] Get a report of unresolved claims ");
                             System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id = myScanner.nextInt() ;
@@ -90,12 +90,12 @@ class Main {
                                     corp_interface.revenue_report(con, start_date, end_date);
                                     break;
                                 case 2:
-                                    System.out.println("Claims Resolved Report :\n");
-                                    corp_interface.claims_resolved_report(con);
+                                    System.out.println("Profitability by Customer:\n");
+                                    corp_interface.profitability_by_customer(con);
                                     break;
                                 case 3:
                                     System.out.println("Claims Ongoing Report :\n");
-                                    corp_interface.claims_ongoing_report(con);
+                                    //corp_interface.claims_ongoing_report(con);
                                     break;
                             }
                             break;
@@ -322,6 +322,8 @@ class Main {
                             System.out.println("Would you like to :");
                             System.out.println("\n");
                             System.out.println("[1] Assign Outsourcing entities to a claim");
+                            System.out.println("[2] Get a report on Ongoing Claims");
+                            System.out.println("[3] Get a report on Resolved Claims");
                             System.out.println("----------------------------------------------------------------------------------------------");
                             int choice_id_4= myScanner.nextInt() ;
                             myScanner.nextLine();
@@ -351,7 +353,17 @@ class Main {
                                     System.out.println("\n");
                                     adjuster_intrf.assign_outcrng(con);
                                     break;
-                            }
+                            
+                                case 2:
+                                    System.out.println("Claims Ongoing Report :\n");
+                                    adjuster_intrf.claims_ongoing_report(con);
+                                    break;
+                                    
+                                case 3:
+                                    System.out.println("Claims Resolved Report :\n");
+                                    adjuster_intrf.claims_resolved_report(con);
+                                    break;
+                                }
                             break;
                         case 5:
                             System.out.println("Are you sure that you want to quit :'(  ?");
