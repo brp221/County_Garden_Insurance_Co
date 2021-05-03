@@ -2,6 +2,8 @@ import java.sql.*;
 import java.util.*;
 
 public class CorpManagement {
+
+    //get a report of total company revenue
     public void revenue_report(Connection con, String start_date, String end_date)
     {
         try{
@@ -29,6 +31,7 @@ public class CorpManagement {
         }
     }
 
+    //get the profitability of each customer
     public void profitability_by_customer(Connection con){
         try{
             String profit_by_cust = "SELECT * FROM (select claim.customer_id as customer_ID, claim.tot_amount as BILL, claim_payments.company_liability as CountyGardensLiability, claim.summary as summary from claim inner join claim_payments on claim.id = claim_payments.claim_id) lower_db inner join (select policy.customer_id, sum(payment.amount) as amount_paid from policy inner join payment on policy.id = payment.policy_id group by customer_id) higher_db  on lower_db.customer_id = higher_db.customer_id" ;
@@ -54,6 +57,7 @@ public class CorpManagement {
         }
     }
 
+    //display the ratios of customerPaid vs companyLiability and customerClaimed vs companyLiability
     public void fairness_ratios(Connection con){
         /**Amount Claimed by Customer vs Amount Payed by Company vs Insurance Paid by Customer*/
         try{

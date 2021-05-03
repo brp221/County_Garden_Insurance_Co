@@ -3,6 +3,8 @@ import java.util.*;
 
 
 public class Agent {
+
+    //get all customers with ongoing claims
     public void customers_pending_claims(Connection con)
     {
         try{
@@ -30,6 +32,7 @@ public class Agent {
         }
     };
 
+    //deactivate a policy given a policy_id
     public void deactvt_policy(Connection con, int policy_id){
         try{
 
@@ -48,6 +51,7 @@ public class Agent {
         }
     }
 
+    //add a customer given a bio
     public void add_customer(Connection con, String bio)
     {
         try{

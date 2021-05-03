@@ -3,6 +3,7 @@ import java.util.*;
 
 public class CustomerAction {
     
+    //add a policy given a customer id
     public boolean add_policy(Connection con,int customer_id){
 
 
@@ -59,6 +60,7 @@ public class CustomerAction {
         }
     }
 
+    //view all beneficiaries given a policy id
     public void benfcrs_by_policy_id(Connection con, int policy_id){
         try{
             System.out.println("\n");
@@ -86,6 +88,7 @@ public class CustomerAction {
         }
     };
 
+    //delete a beneficiary given a customer_id and a beneficiaryid
     public void del_beneficiary(Connection con, int customer_id,int beneficiary_id)
     {   
         

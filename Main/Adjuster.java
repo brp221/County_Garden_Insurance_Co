@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Adjuster {
 
+    //assign an outsourcing entity to a claim
     public boolean assign_outcrng(Connection con)
     {
         Scanner myScanner = new Scanner(System.in);  // Create a Scanner object
@@ -61,6 +62,7 @@ public class Adjuster {
         }
     };
 
+    //view all resolved claims
     public void claims_resolved_report(Connection con){
         {
             System.out.println(); 
@@ -107,6 +109,8 @@ public class Adjuster {
             }
         };
     }
+    
+    //view all ongoing claims
     public void claims_ongoing_report(Connection con){
     try{
 
